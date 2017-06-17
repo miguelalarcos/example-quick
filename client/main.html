@@ -1,0 +1,99 @@
+<head>
+  <title>example-quick</title>
+</head>
+
+<body>
+  {{> main}}
+</body>
+
+<template name="main">
+  {{> search initial=initial output='querySearch'}}
+  {{> sales input="querySearch" output="sale"}}
+  {{> sale input="sale"}}
+  {{# if lineVisible}}
+    <div>Lines and create line:</div>
+    {{> lines input="sale"}}
+    {{> line input="line"}}
+  {{/if}}  
+</template>
+
+<template name="search">
+  <div>
+    <form class="search">
+        <span>
+            <span>Fecha entre: </span>
+            <input type="text" name="sale_date$gte" class="date" value={{doc 'sale_date$gte'}}>
+            <span>y: </span>
+            <input type="text" name="sale_date$lte" class="date" value={{doc 'sale_date$lte'}}>
+        </span>
+        {{# if isValid}}
+          <a href="#" class="submit">Buscar</a>
+        {{/ if}}  
+        </form>
+  </div>  
+</template>
+
+<template name="sales">
+  <div>
+    <table>
+      {{# each sales}}
+        <tr>
+          <td>{{sale_date}}</td>
+          <td>{{client.value}}</td>
+          <td>{{amount}}</td>
+          <td><a docId={{_id}} class="edit">edit</a></td>
+        </tr>
+      {{/ each}}
+    </table>  
+  </div>
+</template>
+
+<template name="sale">
+  <div>
+    <form class="sale">
+        <table>
+        <tr>
+            <td><span>Date: </span></td>
+            <td><input type="text" name="sale_date" class="date form-control" value={{doc 'sale_date'}}></td>
+        </tr>
+        <tr>
+          <td><div class="error">{{errorMessage 'sale_date'}}</div></td>
+        </tr>
+        <tr>
+            <td><span>Amount: </span></td>
+            <td><input type="text" name="amount" class="float form-control" value={{doc 'amount'}}></td>
+        </tr>
+        <tr>
+          <td><div class="error">{{errorMessage 'amount'}}</div></td>
+        </tr>
+        <tr>
+          <td><span>Client: </span></td>
+          <td>{{> searchInMaster method='queryClients' set=(setDoc 'client') value=(doc 'client.value') }}</td>
+        </tr>
+        {{# if isValid}}
+          <a href="#" class="submit">Save</a>
+        {{/ if}}  
+        <a href="#" class="reset">Reset</a>
+        </table>
+    </form>        
+  </div>  
+</template>
+
+<template name="lines">
+  <div>
+    {{#each lines}}
+      <div>
+        {{item}}, {{quantity}}, {{amount}}, <a href="#" class="remove">remove</a>
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="line">
+  <div>
+    Item: <input type="text" class="string" name="item" value={{doc 'item'}}>
+    Quantity: <input type="text" class="integer" name="quantity" value={{doc 'quantity'}}>
+    Amount: <input type="text" class="float" name="amount" value={{doc 'amount'}}>
+    <a href="#" class='submit'>Save</a>
+  </div>
+</template>
