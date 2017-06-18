@@ -19,9 +19,7 @@ shell-server@0.2.3            # Server-side component of the `meteor shell` comm
 
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 miguelalarcos:quick-search-form
-useful:forms
 bigdsk:inputmask
 twbs:bootstrap
 eternicode:bootstrap-datepicker
-mizzao:autocomplete
 dynamic-import
